@@ -1,0 +1,94 @@
+version: "3.8"
+
+services:
+  # Serviço de autenticação Keycloak
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.1
+    container_name: keycloak
+    command: start-dev
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USER}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+    ports:
+      - "8080:8080"
+    networks:
+      - hypesoft-net
+
+  # Banco de dados MongoDB
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    networks:
+      - hypesoft-net
+
+  # Visual para o MongoDB
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ROOT_USER}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ROOT_PASSWORD}
+      - ME_CONFIG_MONGODB_SERVER=mongo
+    depends_on:
+      - mongo
+    networks:
+      - hypesoft-net
+
+  # Backend em .NET
+  backend:
+    container_name: hypesoft-api
+    build:
+      context: ./backend
+      dockerfile: Hypesoft.API/Dockerfile
+    ports:
+      - "5000:8080" # Porta 5000 do host para a 8080 do container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - MongoDbSettings__ConnectionString=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo:27017
+      - MongoDbSettings__DatabaseName=ShopSenseDb
+      - Jwt__Authority=http://keycloak:8080/realms/hypesoft
+      - Jwt__Audience=hypesoft-client
+    depends_on:
+      - mongo
+      - keycloak
+    networks:
+      - hypesoft-net
+
+  # Frontend em Next.js
+  frontend:
+    container_name: hypesoft-web
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000/api
+      - NEXT_PUBLIC_KEYCLOAK_URL=http://localhost:8080
+      - NEXT_PUBLIC_KEYCLOAK_REALM=hypesoft
+      - NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=hypesoft-client-frontend
+    depends_on:
+      - backend
+    networks:
+      - hypesoft-net
+
+# Volumes 
+volumes:
+  mongo-data:
+    driver: local
+
+# Rede comunicação entre os containers
+networks:
+  hypesoft-net:
+    driver: bridge
