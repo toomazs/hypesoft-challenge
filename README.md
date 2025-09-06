@@ -132,16 +132,19 @@ frontend/src/
 - **Keycloak 25.0** como Identity Provider
 - **Mongo Express** para administração do BD
 - **Nginx** como reverse proxy
-- **Health checks** implementados
 
 ## Como Executar
 
 ### Pré-requisitos
 
 - **Docker Desktop** 4.0+
+- Node.js 18+
+- .NET 9 SDK
+- Git
+  
 - **Git**
 
-### 1. Apenas clone o projeto e execute o `.inicializar-projeto`
+### 1. Clone o projeto
 
 ```bash
 # Clone o repositório
