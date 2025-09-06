@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hypesoft.API</name>
+    </assembly>
+    <members>
+        <member name="T:Hypesoft.API.Middlewares.CorrelationIdMiddleware">
+            <summary>
+            Middleware to handle correlation ID for distributed tracing and request correlation
+            Generates a unique ID for each request and ensures it's available throughout the request pipeline
+            </summary>
+        </member>
+        <member name="T:Hypesoft.API.Middlewares.HealthCheckMiddleware">
+            <summary>
+            Enhanced health check middleware with detailed service status reporting
+            Provides comprehensive health information for monitoring and observability
+            </summary>
+        </member>
+        <member name="T:Hypesoft.API.Middlewares.InputSanitizationMiddleware">
+            <summary>
+            Middleware para sanitização de entradas - previne ataques de injeção
+            </summary>
+        </member>
+        <member name="T:Hypesoft.API.Middlewares.RateLimitingMiddleware">
+            <summary>
+            Middleware para rate limiting - previne abuso da API
+            </summary>
+        </member>
+        <member name="T:Hypesoft.API.Middlewares.SecurityHeadersMiddleware">
+            <summary>
+            Middleware para adicionar headers de segurança
+            </summary>
+        </member>
+    </members>
+</doc>

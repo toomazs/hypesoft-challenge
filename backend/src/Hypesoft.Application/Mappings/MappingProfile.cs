@@ -5,16 +5,19 @@ using Hypesoft.Domain.Entities;
 
 namespace Hypesoft.Application.Mappings;
 
-// AutoMapper é uma mão na roda. Evita que a gente fique fazendo `product.Name = dto.Name`
-// um milhão de vezes. A gente define as regras de "de-para" aqui.
+// Atualizando o AutoMapper pra ele conhecer as classes de Categoria também.
 public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        // De: Entidade Product, Para: ProductDto
+        // Mapeamentos de Produto
         CreateMap<Product, ProductDto>().ReverseMap();
-
-        // De: Comando de criação, Para: Entidade Product
         CreateMap<CreateProductCommand, Product>();
+        CreateMap<UpdateProductCommand, Product>();
+
+        // Mapeamentos de Categoria
+        CreateMap<Category, CategoryDto>().ReverseMap();
+        CreateMap<CreateCategoryCommand, Category>();
+        CreateMap<UpdateCategoryCommand, Category>();
     }
 }

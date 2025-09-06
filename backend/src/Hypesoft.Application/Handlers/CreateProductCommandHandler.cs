@@ -1,34 +1,53 @@
-using AutoMapper;
+using MediatR;
 using Hypesoft.Application.Commands;
 using Hypesoft.Application.DTOs;
 using Hypesoft.Domain.Entities;
 using Hypesoft.Domain.Repositories;
-using MediatR;
 
 namespace Hypesoft.Application.Handlers;
 
-// Este é o "Handler", o cara que sabe o que fazer quando recebe um CreateProductCommand.
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductDto>
 {
     private readonly IProductRepository _productRepository;
-    private readonly IMapper _mapper;
+    private readonly ICategoryRepository _categoryRepository;
 
-    // Injeção de dependência na veia! Recebemos as ferramentas que precisamos.
-    public CreateProductCommandHandler(IProductRepository productRepository, IMapper mapper)
+    public CreateProductCommandHandler(
+        IProductRepository productRepository,
+        ICategoryRepository categoryRepository)
     {
         _productRepository = productRepository;
-        _mapper = mapper;
+        _categoryRepository = categoryRepository;
     }
 
     public async Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        // Mapeia o comando para a nossa entidade de domínio
-        var product = _mapper.Map<Product>(request);
+        var product = new Product
+        {
+            Name = request.Name,
+            Description = request.Description,
+            Price = request.Price,
+            CategoryId = request.CategoryId,
+            StockQuantity = request.StockQuantity,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
 
-        // Chama o repositório para salvar no banco
-        await _productRepository.AddAsync(product);
+        await _productRepository.AddAsync(product, cancellationToken);
 
-        // Mapeia a entidade (agora com ID) de volta para um DTO e retorna
-        return _mapper.Map<ProductDto>(product);
+        var categories = await _categoryRepository.GetAllAsync(cancellationToken);
+        var category = categories.FirstOrDefault(c => c.Id == product.CategoryId);
+
+        return new ProductDto
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Price = product.Price,
+            CategoryId = product.CategoryId,
+            CategoryName = category?.Name ?? "Sem categoria",
+            StockQuantity = product.StockQuantity,
+            CreatedAt = product.CreatedAt,
+            UpdatedAt = product.UpdatedAt
+        };
     }
 }

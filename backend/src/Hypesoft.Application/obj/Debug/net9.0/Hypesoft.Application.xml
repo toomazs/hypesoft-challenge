@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hypesoft.Application</name>
+    </assembly>
+    <members>
+        <member name="T:Hypesoft.Application.Validators.CreateProductCommandValidator">
+            <summary>
+            Comprehensive validator for CreateProductCommand with business rules
+            Implements enterprise-level validation patterns
+            </summary>
+        </member>
+    </members>
+</doc>

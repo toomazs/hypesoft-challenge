@@ -1,0 +1,14 @@
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\bin\Release\net9.0\Hypesoft.Domain.deps.json
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\bin\Release\net9.0\Hypesoft.Domain.dll
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\bin\Release\net9.0\Hypesoft.Domain.pdb
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\Hypesoft.Domain.csproj.AssemblyReference.cache
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\Hypesoft.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\Hypesoft.Domain.AssemblyInfoInputs.cache
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\Hypesoft.Domain.AssemblyInfo.cs
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\Hypesoft.Domain.csproj.CoreCompileInputs.cache
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\Hypesoft.Domain.dll
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\refint\Hypesoft.Domain.dll
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\Hypesoft.Domain.pdb
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\ref\Hypesoft.Domain.dll
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\bin\Release\net9.0\Hypesoft.Domain.xml
+C:\temp\ws-git\hypesoft-challenge\backend\src\Hypesoft.Domain\obj\Release\net9.0\Hypesoft.Domain.xml

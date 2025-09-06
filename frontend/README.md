@@ -1,36 +1,187 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ShopSense Frontend
 
-## Getting Started
+Frontend do sistema ShopSense desenvolvido com Next.js 14, TypeScript e Tailwind CSS.
 
-First, run the development server:
+## 🚀 Tecnologias
+
+- **Next.js 14** - Framework React com App Router
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Framework CSS utilitário
+- **shadcn/ui** - Componentes UI baseados em Radix UI
+- **React Query** - Gerenciamento de estado e cache
+- **Keycloak** - Autenticação e autorização
+- **Recharts** - Gráficos e visualizações
+- **Lucide React** - Ícones
+
+## 📦 Instalação
+
+1. **Instalar dependências:**
+
+```bash
+npm install
+```
+
+2. **Configurar variáveis de ambiente:**
+   Crie um arquivo `.env.local` na raiz do projeto:
+
+```env
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+
+# Keycloak Configuration
+NEXT_PUBLIC_KEYCLOAK_URL=http://localhost:8080
+NEXT_PUBLIC_KEYCLOAK_REALM=hypesoft
+NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=hypesoft-client-frontend
+```
+
+3. **Executar em desenvolvimento:**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. **Build para produção:**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏗️ Estrutura do Projeto
 
-## Learn More
+```
+src/
+├── app/                    # App Router do Next.js
+│   ├── (protected)/       # Rotas protegidas (requerem auth)
+│   │   ├── dashboard/     # Dashboard principal
+│   │   └── products/      # Gestão de produtos
+│   ├── login/             # Página de login
+│   ├── globals.css        # Estilos globais
+│   ├── layout.tsx         # Layout raiz
+│   └── page.tsx           # Página inicial
+├── components/            # Componentes reutilizáveis
+│   ├── ui/               # Componentes base (shadcn/ui)
+│   └── layout/           # Componentes de layout
+├── contexts/             # Contextos React (Auth)
+├── hooks/                # Custom hooks
+├── services/             # Serviços de API
+├── types/                # Definições TypeScript
+└── lib/                  # Utilitários
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🔐 Autenticação
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+O sistema utiliza **Keycloak** para autenticação:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Login**: Redirecionamento para Keycloak
+- **Logout**: Logout integrado com Keycloak
+- **Proteção de rotas**: Middleware automático
+- **Refresh de token**: Automático
+- **Roles**: Baseado em roles do Keycloak
 
-## Deploy on Vercel
+## 📱 Funcionalidades
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Dashboard
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Estatísticas em tempo real
+- Gráficos de produtos por categoria
+- Alertas de estoque baixo
+- Produtos recentes
+
+### Gestão de Produtos
+
+- CRUD completo de produtos
+- Busca e filtros
+- Paginação
+- Validação de formulários
+- Controle de estoque
+
+### Categorias
+
+- Gestão de categorias
+- Associação com produtos
+- Validação de integridade
+
+## 🎨 Design System
+
+- **Tailwind CSS** para estilização
+- **shadcn/ui** para componentes base
+- **Design responsivo** para mobile e desktop
+- **Tema claro/escuro** (preparado)
+- **Ícones Lucide** para consistência visual
+
+## 🧪 Testes
+
+```bash
+# Executar testes
+npm test
+
+# Testes em modo watch
+npm run test:watch
+
+# Verificação de tipos
+npm run type-check
+```
+
+## 🚀 Deploy
+
+### Docker
+
+```bash
+# Build da imagem
+docker build -t hypesoft-frontend .
+
+# Executar container
+docker run -p 3000:3000 hypesoft-frontend
+```
+
+### Vercel
+
+```bash
+# Deploy automático
+vercel --prod
+```
+
+## 📊 Performance
+
+- **Code splitting** automático
+- **Lazy loading** de componentes
+- **Cache** com React Query
+- **Otimização de imagens** (Next.js)
+- **Bundle analyzer** disponível
+
+## 🔧 Desenvolvimento
+
+### Scripts Disponíveis
+
+- `npm run dev` - Desenvolvimento com hot reload
+- `npm run build` - Build de produção
+- `npm run start` - Servidor de produção
+- `npm run lint` - Linting do código
+- `npm run type-check` - Verificação de tipos
+
+### Padrões de Código
+
+- **ESLint** para qualidade
+- **Prettier** para formatação
+- **TypeScript strict mode**
+- **Conventional Commits**
+
+## 📚 Documentação
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [React Query](https://tanstack.com/query/latest)
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto é parte do desafio técnico da Hypesoft.

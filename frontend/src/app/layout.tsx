@@ -1,27 +1,23 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import { Sidebar } from '@/components/layout/Sidebar';
-
-const inter = Inter({ subsets: ['latin'] });
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { Providers } from "./providers"; 
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'ShopSense Dashboard',
-  description: 'Gerenciador de Produtos Hypesoft',
+  title: "ShopSense - Sistema de Gestão de Produtos",
+  description: "Sistema completo de gestão de produtos com autenticação simplificada",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className={inter.className}>
-        <div className="flex min-h-screen w-full">
-          <Sidebar />
-          <main className="flex-1 p-4 sm:p-6">{children}</main>
-        </div>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hypesoft.Infrastructure</name>
+    </assembly>
+    <members>
+        <member name="T:Hypesoft.Infrastructure.Repositories.ProductRepository">
+            <summary>
+            MongoDB implementation of the Product repository
+            Provides comprehensive data access operations with filtering, pagination and business logic support
+            </summary>
+        </member>
+    </members>
+</doc>

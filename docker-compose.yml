@@ -1,67 +1,83 @@
-version: "3.8"
-
 services:
-  # Serviço de autenticação Keycloak
-  keycloak:
-    image: quay.io/keycloak/keycloak:25.0.1
-    container_name: keycloak
-    command: start-dev
-    environment:
-      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USER}
-      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
-    ports:
-      - "8080:8080"
-    networks:
-      - hypesoft-net
-
   # Banco de dados MongoDB
   mongo:
-    image: mongo:latest
+    image: mongo:5.0
     container_name: mongo
+    restart: always
     ports:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
     networks:
       - hypesoft-net
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --username admin --password password123 --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
-  # Visual para o MongoDB
+  # Interface visual para o MongoDB
   mongo-express:
-    image: mongo-express:latest
+    image: mongo-express:0.54
     container_name: mongo-express
     restart: always
     ports:
       - "8081:8081"
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_ROOT_USER}
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_ROOT_PASSWORD}
-      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password123
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:password123@mongo:27017/
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin123
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     networks:
       - hypesoft-net
 
-  # Backend em .NET
+  # Keycloak para autenticação
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.1
+    container_name: keycloak
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak-import.json:/opt/keycloak/data/import/keycloak-import.json:ro
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin123
+      - KC_HOSTNAME=localhost
+      - KC_HTTP_ENABLED=true
+      - KC_PROXY=edge
+    command: start-dev --import-realm
+    networks:
+      - hypesoft-net
+
+  # API Backend em .NET
   backend:
     container_name: hypesoft-api
     build:
       context: ./backend
-      dockerfile: Hypesoft.API/Dockerfile
-    ports:
-      - "5000:8080" # Porta 5000 do host para a 8080 do container
+      dockerfile: src/Hypesoft.API/Dockerfile
+    expose:
+      - "8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
-      - MongoDbSettings__ConnectionString=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo:27017
-      - MongoDbSettings__DatabaseName=ShopSenseDb
-      - Jwt__Authority=http://keycloak:8080/realms/hypesoft
-      - Jwt__Audience=hypesoft-client
+      - MONGO_CONNECTION_STRING=mongodb://admin:password123@mongo:27017
+      - MONGO_DATABASE_NAME=ShopSenseDb
+      - KEYCLOAK_AUTHORITY=http://localhost:8080/realms/hypesoft
+      - KEYCLOAK_AUDIENCE=hypesoft-api
     depends_on:
-      - mongo
-      - keycloak
+      mongo:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
     networks:
       - hypesoft-net
 
@@ -71,24 +87,40 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:5000/api
+      - NEXT_PUBLIC_API_URL=http://localhost:3000/api
       - NEXT_PUBLIC_KEYCLOAK_URL=http://localhost:8080
       - NEXT_PUBLIC_KEYCLOAK_REALM=hypesoft
-      - NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=hypesoft-client-frontend
+      - NEXT_PUBLIC_KEYCLOAK_CLIENT_ID=hypesoft-frontend
     depends_on:
       - backend
     networks:
       - hypesoft-net
 
-# Volumes 
+  # Nginx como Reverse Proxy
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "3000:80"
+      - "5000:5000"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - hypesoft-net
+
+# Volumes para persistência de dados
 volumes:
   mongo-data:
     driver: local
 
-# Rede comunicação entre os containers
+# Rede para comunicação
 networks:
   hypesoft-net:
     driver: bridge

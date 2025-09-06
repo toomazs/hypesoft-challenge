@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Hypesoft.Domain</name>
+    </assembly>
+    <members>
+        <member name="T:Hypesoft.Domain.Common.BaseEntity">
+            <summary>
+            Base class for all domain entities
+            Implements common patterns like domain events
+            </summary>
+        </member>
+        <member name="P:Hypesoft.Domain.Common.BaseEntity.DomainEvents">
+            <summary>
+            Domain events that occurred in this entity
+            </summary>
+        </member>
+        <member name="M:Hypesoft.Domain.Common.BaseEntity.AddDomainEvent(Hypesoft.Domain.Common.IDomainEvent)">
+            <summary>
+            Add a domain event to be published
+            </summary>
+        </member>
+        <member name="M:Hypesoft.Domain.Common.BaseEntity.ClearDomainEvents">
+            <summary>
+            Clear domain events after they have been published
+            </summary>
+        </member>
+        <member name="T:Hypesoft.Domain.Common.IDomainEvent">
+            <summary>
+            Marker interface for domain events
+            </summary>
+        </member>
+        <member name="T:Hypesoft.Domain.Common.DomainEvent">
+            <summary>
+            Base class for domain events
+            </summary>
+        </member>
+        <member name="T:Hypesoft.Domain.DomainEvents.ProductCreatedEvent">
+            <summary>
+            Domain event fired when a new product is created
+            </summary>
+        </member>
+        <member name="T:Hypesoft.Domain.DomainEvents.ProductStockUpdatedEvent">
+            <summary>
+            Domain event fired when product stock is updated
+            </summary>
+        </member>
+        <member name="T:Hypesoft.Domain.Repositories.IProductRepository">
+            <summary>
+            Repository contract for Product entity operations
+            Includes comprehensive CRUD operations with filtering, pagination and business logic support
+            </summary>
+        </member>
+        <member name="T:Hypesoft.Domain.ValueObjects.Money">
+            <summary>
+            Value object representing monetary values
+            Ensures proper handling of currency and prevents common decimal issues
+            </summary>
+        </member>
+        <member name="T:Hypesoft.Domain.ValueObjects.StockQuantity">
+            <summary>
+            Value object representing stock quantities
+            Ensures proper business rules around stock management
+            </summary>
+        </member>
+    </members>
+</doc>
