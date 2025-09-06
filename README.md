@@ -141,21 +141,20 @@ frontend/src/
 - **Docker Desktop** 4.0+
 - **Git**
 
-### 1. Clone e Execute
+### 1. Apenas clone o projeto e execute o `.inicializar-projeto`
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/hypesoft-challenge.git
+git clone https://github.com/toomazs/hypesoft-challenge.git
 cd hypesoft-challenge
+```
+### 2. Apos isso, duplo clique no .inicializar-projeto.bat. Ele vai fazer tudo por voce.
 
-# Execute todos os serviços (vai baixar e configurar tudo automaticamente)
-docker-compose up -d
-
-# Aguarde ~2 minutos para todos os serviços subirem
-docker-compose ps
+```bash
+.inicializar-projeto.bat
 ```
 
-### 2. Acesse as Aplicações
+### 3. Acesse as Aplicações
 
 | Serviço        | URL                           | Descrição           |
 | -------------- | ----------------------------- | ------------------- |
@@ -165,12 +164,12 @@ docker-compose ps
 | MongoDB Admin  | http://localhost:8081         | Mongo Express       |
 | Keycloak Admin | http://localhost:8080         | Keycloak Console    |
 
-### 3. Login no Sistema
+### 4. Login no Sistema
 
 - Usuário: `admin`
 - Senha: `admin123`
 
-### 4. Dados de Exemplo
+### 5. Dados de Exemplo
 
 O sistema já vem com dados pré-populados:
 
@@ -180,10 +179,10 @@ O sistema já vem com dados pré-populados:
 
 ## Teste de Performance
 
-Execute o arquivo `teste-endpoints.bat` (Windows) para verificar performance:
+Execute o arquivo `.teste-endpoints.bat` (Windows) para verificar performance:
 
 ```bash
-teste-endpoints.bat
+.teste-endpoints.bat
 ```
 
 Métricas Esperadas:
